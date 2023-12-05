@@ -13,7 +13,7 @@ import cors from "cors";
 import session from "express-session";
 import "dotenv/config";
 
-mongoose.connect("mongodb://127.0.0.1:27017/kanbas");
+mongoose.connect(process.env.DB_CONNECTION_STRING);
 
 const app = express();
 app.use(
