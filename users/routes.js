@@ -79,12 +79,16 @@ function UserRoutes(app) {
 
   const signup = async (req, res) => {
     const { email, username, password } = req.body;
-    const user = await dao.createUser({
-      email,
-      username,
-      password,
-    });
-    res.json(user);
+    try {
+      const user = await dao.createUser({
+        email,
+        username,
+        password,
+      });
+      res.json(user);
+    } catch (error) {
+      res.sendStatus(500);
+    }
   };
 
   const account = async (req, res) => {
