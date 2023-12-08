@@ -29,16 +29,16 @@ function UserRoutes(app) {
     res.json(users);
   };
 
-  const createUser = async (req, res) => {
-    const { username, password, email, role } = req.params;
-    const user = await dao.createUser({
-      username,
-      password,
-      email,
-      role,
-    });
-    res.json(user);
-  };
+  // const createUser = async (req, res) => {
+  //   const { username, password, email, role } = req.params;
+  //   const user = await dao.createUser({
+  //     username,
+  //     password,
+  //     email,
+  //     role,
+  //   });
+  //   res.json(user);
+  // };
 
   const updateUser = async (req, res) => {
     const id = req.params.id;
@@ -77,7 +77,15 @@ function UserRoutes(app) {
     res.sendStatus(200);
   };
 
-  const signup = async (req, res) => {};
+  const signup = async (req, res) => {
+    const { email, username, password } = req.body;
+    const user = await dao.createUser({
+      email,
+      username,
+      password,
+    });
+    res.json(user);
+  };
 
   const account = async (req, res) => {
     const currentUser = req.session["currentUser"];
@@ -88,13 +96,14 @@ function UserRoutes(app) {
     res.json(currentUser);
   };
 
+  app.post("/api/users", signup);
   app.post("/api/users/signout", signout);
   app.post("/api/users/signin", signin);
   app.post("/api/users/account", account);
 
   app.delete("/api/users/:id", deleteUser);
   app.get("/api/users/updateFirstName/:id/:newFirstName", updateFirstName);
-  app.get("/api/users/:username/:password/:email/:role", createUser);
+  // app.get("/api/users/:username/:password/:email/:role", createUser);
   app.get("/api/users/role/:role", findUsersByRole);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:id", findUserById);
